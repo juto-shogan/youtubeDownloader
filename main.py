@@ -1,5 +1,6 @@
-import tkinter
+import tkinter 
 from tkinter import *
+from tkinter import messagebox
 from pytube import YouTube
 
 
@@ -11,15 +12,18 @@ class vidSystem:
     def vidname(self):
         return self.yt.title
     
-    def vidDownload(self):
+    def vidDownload(self, download_path):
         try:
             
             stream = self.yt.streams.get_highest_resolution()
             
             stream.download().filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
+            messagebox.showinfo("Download Complete!", f"The video '{self.vidname()}' has been downloaded to {download_path}!")
         
         except Exception as e:
-            print(f"error occured: {e}")
+            # print(f"error occured: {e}")
+              messagebox.showerror("Download Error", f"An error occurred during download: {e}")
+
         
 
     
@@ -27,15 +31,26 @@ class vidSystem:
 def download_video():
     # Get URL and download path from entries
     url = url_entry.get()
-    downloader = vidSystem(url)
+    path = path_entry.get()
+    
+    if not url:
+        messagebox.showwarning("Invalid URL", "Please enter a valid YouTube video URL.")
+        return
+    
+    if not path:
+        messagebox.showinfo("Download Cancelled", "No download location chosen.")
+        return
+        
+    downloader = vidSystem(url, path)
     downloader.vidDownload()    
 
 
 root = Tk()
-
 root.geometry("500x200")
 root.resizable(width=False, height=False)
+root.configure(bg="#f0f0f0")
 root.title('MY DOWNLOADER')
+
 
 
 ytDownloader_text = Label(root, text= "DOWNLOAD BEST QUALITY NOW" )
@@ -47,8 +62,16 @@ url_entry.grid(row=2, column=4)
 url_text = Label(root, text= "LINK:" )
 url_text.grid(row=2, column=1)
 
-download_b = Button(root, text="DOWNLOAD", padx=80, pady=20, command=download_video)
-download_b.grid(row=3, column=4)
+
+path_entry = Entry(root, width=35, borderwidth=5)
+path_entry.grid(row=3, column=4)
+path_text = Label(root, text= "PATH:" )
+path_text.grid(row=3, column=1)
+
+
+
+download_b = Button(root, text="DOWNLOAD", padx=80, pady=20, bg= 'blue', command=download_video)
+download_b.grid(row=4, column=4)
 
 button_quit = Button(root, text="EXIT PROGRAM", command=root.quit)
 button_quit.grid(row=5, column=5)
@@ -56,14 +79,3 @@ button_quit.grid(row=5, column=5)
 
 
 root.mainloop()
-
-
-
-
-
- 
- 
- 
-
-
-
