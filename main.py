@@ -5,26 +5,23 @@ from pytube import YouTube
 
 
 class vidSystem:
-    def __init__(self, url):
+    def __init__(self, url, path):
         self.url = url
+        self.path = path
         self.yt = YouTube(url)
     
     def vidname(self):
         return self.yt.title
     
-    def vidDownload(self, download_path):
+    def vidDownload(self):
         try:
-            
+            global path  # Assuming path is a global variable set in download_video
             stream = self.yt.streams.get_highest_resolution()
-            
-            stream.download().filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
-            messagebox.showinfo("Download Complete!", f"The video '{self.vidname()}' has been downloaded to {download_path}!")
+            stream.download().filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download(path)
+            messagebox.showinfo("Download Complete!", f"The video '{self.vidname()}' has been downloaded to {path}!")
         
         except Exception as e:
-            # print(f"error occured: {e}")
-              messagebox.showerror("Download Error", f"An error occurred during download: {e}")
-
-        
+            messagebox.showerror("Download Error", f"An error occurred during download: {e}")
 
     
 
@@ -32,7 +29,6 @@ def download_video():
     # Get URL and download path from entries
     url = url_entry.get()
     path = path_entry.get()
-    
     if not url:
         messagebox.showwarning("Invalid URL", "Please enter a valid YouTube video URL.")
         return
