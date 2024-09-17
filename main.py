@@ -1,7 +1,7 @@
 import tkinter 
 from tkinter import *
 from tkinter import messagebox
-from pytube import YouTube
+from pytubefix import YouTube
 
 
 class vidSystem:
