@@ -38,6 +38,6 @@ A simple GUI application to download YouTube videos in the highest available qua
 
 ## Troubleshooting
 - Update pytubefix: 
-  ```bash 
+```bash 
   pip install --upgrade pytubefix
- ```
+```
