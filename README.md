@@ -2,7 +2,7 @@ Here's the formatted content for your `README.md` file:
 
 ```markdown
 # YouTube Video Downloader
-
+```
 A simple GUI application to download YouTube videos in the highest available quality.
 
 ## Features
